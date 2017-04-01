@@ -15,7 +15,7 @@ bool playerTurn(Scores * score, Grids * grids, Ships * shipsOnField)
             printMainGrid(grids->mainGrid, shipsOnField->player, BATTLE, notUsedPtr);
             printAuxiliaryGrid(grids->auxGrid, ptr, shipsOnField->computer);
             printf("\nControls: W,A,S,D - move cannons\n");
-            printf("          [Enter] - fire\n");
+            printf("          [Space] - fire\n");
         } while (!placePointer(grids->auxGrid, &ptr));
 
         score->curr->shots++;
@@ -120,7 +120,7 @@ bool placePointer(char grid[][MAX_GRID], Coords *ptr)
         if (ptr->x + 1 < MAX_GRID)
             ptr->x++;
         break;
-    case '\r':  // == [Enter]
+    case ' ':  // == [Space]
         if (grid[ptr->y][ptr->x] == HIT_CELL ||
             grid[ptr->y][ptr->x] == MISS_CELL)
             return false;
