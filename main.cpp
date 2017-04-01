@@ -16,14 +16,11 @@ int main(void)
     setlocale(LC_ALL, "866");
 
     printGreet();
-    if (!getName(name))
-        exit(EXIT_SUCCESS);
-    else
-    {
-        grids = initGrids();
-        scores = initScores();
-        shipsOnField = initShipsOnField();
-    }
+    getName(name);
+        
+    grids = initGrids();
+    scores = initScores();
+    shipsOnField = initShipsOnField();
 
     fp = getFilePath(fname);
     if (fp && getPrevScore(fp, name, scores->prev))

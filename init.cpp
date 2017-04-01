@@ -1,15 +1,12 @@
 #include "main.h"
 
-bool getName(char * name)
+void getName(char * name)
 {    
     system("cls");
-    printfCenter("For exit enter '#'");
     printf("\n\n");
     printfCenter("Enter your name");
     printf("\n\n> ");
     scanf("%s", name);
-    if (name[0] == '#')
-        return false;
     return true;
 }
 
