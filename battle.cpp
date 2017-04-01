@@ -26,7 +26,6 @@ bool playerTurn(Scores * score, Grids * grids, Ships * shipsOnField)
             score->curr->hits++;
             if (isShipDestroyed(grids->computer, ptr))
             {
-                score->curr->kills++;
                 shipNum = markDestroyedShip(grids->auxGrid, ptr);
                 shipsOnField->computer[shipNum]--;
             }
@@ -71,7 +70,6 @@ bool computerTurn(Scores * score, Grids * grids, Ships * shipsOnField)
             prevHit = ptr;
             if (isShipDestroyed(grids->mainGrid, ptr))
             {
-                score->curr->deaths++;
                 shipNum = markDestroyedShip(grids->mainGrid, ptr);
                 shipsOnField->player[shipNum]--;
 

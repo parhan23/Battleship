@@ -17,13 +17,9 @@ Scores * initScores(void)
     
     scPtr->curr->shots = 0;
     scPtr->curr->hits = 0;
-    scPtr->curr->kills = 0;
-    scPtr->curr->deaths = 0;
 
     scPtr->prev->shots = 0;
     scPtr->prev->hits = 0;
-    scPtr->prev->kills = 0;
-    scPtr->prev->deaths = 0;
 
     return scPtr;
 }
@@ -105,8 +101,6 @@ bool getPrevScore(FILE *fp, char *targetName, Score *prevScore)
         strcpy(prevScore->name, nameFromFile);
         fscanf(fp, "%d", &prevScore->shots);
         fscanf(fp, "%d", &prevScore->hits);
-        fscanf(fp, "%d", &prevScore->kills);
-        fscanf(fp, "%d", &prevScore->deaths);
 
         fclose(fp);
         return true;

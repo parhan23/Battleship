@@ -8,7 +8,6 @@ int main(void)
     Ships *shipsOnField;
     char fname[MAX_FNAME];
     char name[MAX_PNAME];
-    int turn;
     
     //Console size and color
     system("mode con cols=50 lines=30");
@@ -81,8 +80,6 @@ void saveResult(char fname[], Scores * scores, char targetName[])
     }
     fprintf(file_out, " %d", scores->curr->shots);
     fprintf(file_out, " %d", scores->curr->hits);
-    fprintf(file_out, " %d", scores->curr->kills);
-    fprintf(file_out, " %d", scores->curr->deaths);
 
     fclose(file_in);
     fclose(file_out);

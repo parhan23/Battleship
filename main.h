@@ -44,7 +44,6 @@ struct Score
 {
     char name[MAX_PNAME];
     int shots, hits;
-    int kills, deaths;
 };
 
 struct Scores

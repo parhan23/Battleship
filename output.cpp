@@ -26,8 +26,6 @@ void printPrevScore(Score *prevSc)
     printfCenter("%*s %s\n", DIST, "Name:", prevSc->name);
     printfCenter("%*s %d\n", DIST, "Shots:", prevSc->shots);
     printfCenter("%*s %d\n", DIST, "Hits:", prevSc->hits);
-    printfCenter("%*s %d\n", DIST, "Kills:", prevSc->kills);
-    printfCenter("%*s %d\n", DIST, "Deaths:", prevSc->deaths);
 
     printf("\n");
     printfCenter("To continue press [ENTER]");
