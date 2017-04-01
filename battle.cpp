@@ -3,10 +3,7 @@
 bool playerTurn(Scores * score, Grids * grids, Ships * shipsOnField)
 {
     Coords ptr = {MAX_GRID / 2, MAX_GRID / 2};  //Pointer position
-    
-    Coords shipPos;  //Offsets by 'x' and 'y' from pointer position
-                     //to the end of ship
-    Coords nullPtr = {-1};
+    Coords notUsedPtr = {-1};
     int shipNum;
 
     do
@@ -15,7 +12,7 @@ bool playerTurn(Scores * score, Grids * grids, Ships * shipsOnField)
         do
         {
             system("cls");
-            printMainGrid(grids->mainGrid, shipsOnField->player, BATTLE, nullPtr);
+            printMainGrid(grids->mainGrid, shipsOnField->player, BATTLE, notUsedPtr);
             printAuxiliaryGrid(grids->auxGrid, ptr, shipsOnField->computer);
             printf("\nControls: W,A,S,D - move cannons\n");
             printf("          [Enter] - fire\n");
@@ -38,7 +35,7 @@ bool playerTurn(Scores * score, Grids * grids, Ships * shipsOnField)
             grids->auxGrid[ptr.y][ptr.x] = MISS_CELL;
 
         system("cls");
-        printMainGrid(grids->mainGrid, shipsOnField->player, BATTLE, nullPtr);
+        printMainGrid(grids->mainGrid, shipsOnField->player, BATTLE, notUsedPtr);
         printAuxiliaryGrid(grids->auxGrid, ptr, shipsOnField->computer);
 
         if (isAllShipsDestroyed(shipsOnField->computer))

@@ -3,11 +3,10 @@
 void getName(char * name)
 {    
     system("cls");
-    printf("\n\n");
+    printf("\n");
     printfCenter("Enter your name");
     printf("\n\n> ");
     scanf("%s", name);
-    return true;
 }
 
 Scores * initScores(void)
@@ -164,9 +163,8 @@ int getShip(int *shipsOnField)
     do
         shipNum = _getch() - '1' + 1;
     while (shipNum < 1 || shipNum > 4);
-        return shipNum;
     
-    return 0;
+    return shipNum;
 }
 
 void initSubGrid(char grid[][MAX_GRID])

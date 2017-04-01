@@ -3,25 +3,16 @@
 void performManualPlacement(char grid[][MAX_GRID], int shipsOnField[])
 {
     int shipNum;
-    Coords shipCoords;
-    bool isCorrShip = false;
+    //Coords shipCoords;
     char subGrid[MAX_GRID][MAX_GRID];     //Layer for one ship movements
     char outputGrid[MAX_GRID][MAX_GRID];  //Combined grid
-    Coords nullPtr = {-1};
+    Coords notUsedPtr = {-1};
 
     do
     {
         system("cls");
-        printMainGrid(grid, shipsOnField, PLACEMENT, nullPtr);
-
-        if (!isCorrShip)
-        {
-            shipNum = getShip(shipsOnField);
-            if (shipNum != -1)
-                isCorrShip = true;
-            continue;
-        }
-
+        printMainGrid(grid, shipsOnField, PLACEMENT, notUsedPtr);
+        shipNum = getShip(shipsOnField);
         initSubGrid(subGrid);
         placeFormByDefault(shipNum, subGrid);
 
@@ -29,7 +20,7 @@ void performManualPlacement(char grid[][MAX_GRID], int shipsOnField[])
         {
             buildPlacementOutputGrid(outputGrid, grid, subGrid);
             system("cls");
-            printMainGrid(outputGrid, shipsOnField, PLACEMENT, nullPtr);
+            printMainGrid(outputGrid, shipsOnField, PLACEMENT, notUsedPtr);
             printf("\nSelected ship: #%d\n\n", shipNum);
             printf("Controls: W,A,S,D - move\n");
             printf("          R       - rotate\n");
@@ -37,13 +28,12 @@ void performManualPlacement(char grid[][MAX_GRID], int shipsOnField[])
         } while (!placeForm(shipNum, subGrid, grid));
 
         shipsOnField[shipNum - 1]++;
-        isCorrShip = false;
     } while (!isAllShipsOnField(shipsOnField));
 }
 
 void performRandomPlacement(char grid[][MAX_GRID], int shipsOnField[])
 {
-    Coords nullPtr = {-1};
+    Coords notUsedPtr = {-1};
     
     eatline;
     do
@@ -57,7 +47,7 @@ void performRandomPlacement(char grid[][MAX_GRID], int shipsOnField[])
         
         randomPlacement(grid, shipsOnField);
         system("cls");
-        printMainGrid(grid, shipsOnField, PLACEMENT, nullPtr);
+        printMainGrid(grid, shipsOnField, PLACEMENT, notUsedPtr);
         printf("\n[Any key] - re-placement\n");
         printf("[Enter]   - apply placement");
     } while (_getch() != '\r');

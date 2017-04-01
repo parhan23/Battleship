@@ -94,7 +94,7 @@ enum ConsoleColor {
 };
 
 void printGreet(void);
-bool getName(char *);
+void getName(char *);
 
 Scores * initScores(void);
 Grids * initGrids(void);
