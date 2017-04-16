@@ -1,20 +1,48 @@
 #include "main.h"
 
-void getName(char * name)
+void getName(char *pname)
 {    
     system("cls");
     printf("\n");
     printfCenter("Enter your name");
     printf("\n\n> ");
-    scanf("%s", name);
+    fgetString(stdin, pname, MAX_PNAME);
 }
 
-Scores * initScores(void)
+int fgetString(FILE *stream, char *str, int length)
+{
+    int i = 0;
+    char letter;
+
+    for (i = 0; i < length - 1; i++)
+    {
+        if (fscanf(stream, "%c", &letter) == EOF)
+            return EOF;
+
+        if (letter == '\n')
+            break;
+
+        if (stream != stdin && isdigit(letter))
+        {
+            i--;
+            fseek(stream, -2, SEEK_CUR);
+            break;
+        }
+        
+        str[i] = letter;
+    }
+    str[i] = '\0';
+
+    return i;
+}
+
+Scores * initScores(char playerName[])
 {
     Scores *scPtr = (Scores *)malloc(sizeof(Scores));
     scPtr->curr = (Score *)malloc(sizeof(Score));
     scPtr->prev = (Score *)malloc(sizeof(Score));
     
+    strcpy(scPtr->curr->name, playerName);
     scPtr->curr->shots = 0;
     scPtr->curr->hits = 0;
 
@@ -59,54 +87,43 @@ FILE * getFilePath(char fname[])
     do
         cmd = _getch();
     while (cmd < '1' || cmd > '2');
-    
+
     do
     {
         system("cls");
         printfCenter("Loading previous results\n\n");
-        
+
         if (cmd == '1')
             printfCenter("Enter new file name")
         else
             printfCenter("Enter file name")
 
-        printf("\n\n> ");
+            printf("\n\n> ");
         scanf("%s", fname);
 
         if (cmd == '1')
-            fp = fopen(fname, "w+");
+            fp = fopen(fname, "wb+");
         else
-            fp = fopen(fname, "r");
+            fp = fopen(fname, "rb");
     } while (!fp);
-    
+
     return fp;
 }
 
 bool getPrevScore(FILE *fp, char *targetName, Score *prevScore)
 {
     char nameFromFile[MAX_PNAME];
-    char ch = 0;
+    Score scoreBuffer;
 
-    while (ch != EOF)
-    {
-        ch = fscanf(fp, "%s", nameFromFile);
-        if (strcmp(nameFromFile, targetName) == 0)
-            break;
-        while (((ch = fgetc(fp)) != EOF) && (ch != '\n'))
-            continue;
-    }
-
-    if (ch != EOF)
-    {
-        strcpy(prevScore->name, nameFromFile);
-        fscanf(fp, "%d", &prevScore->shots);
-        fscanf(fp, "%d", &prevScore->hits);
-
-        fclose(fp);
-        return true;
-    }
-
+    while (fread(&scoreBuffer, sizeof(Score), 1, fp))
+        if (strcmp(scoreBuffer.name, targetName) == 0)
+        {
+            *prevScore = scoreBuffer;
+            fclose(fp);
+            return true;
+        }
     fclose(fp);
+
     return false;
 }
 
