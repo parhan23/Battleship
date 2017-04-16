@@ -7,7 +7,7 @@ int main(void)
     Grids *grids;
     Ships *shipsOnField;
     char fname[MAX_FNAME];
-    char pname[MAX_PNAME];
+    char name[MAX_PNAME];
     
     //Console size and color
     system("mode con cols=50 lines=30");
@@ -15,14 +15,14 @@ int main(void)
     setlocale(LC_ALL, "866");
 
     printGreet();
-    getName(pname);
+    getName(name);
         
     grids = initGrids();
-    scores = initScores(pname);
+    scores = initScores();
     shipsOnField = initShipsOnField();
 
     fp = getFilePath(fname);
-    if (fp && getPrevScore(fp, pname, scores->prev))
+    if (fp && getPrevScore(fp, name, scores->prev))
         printPrevScore(scores->prev);
 
     if (getPlacementMode() == MANUAL_PL)
@@ -46,44 +46,47 @@ int main(void)
         }
     }
 
-    saveResult(fname, scores->curr);
+    saveResult(fname, scores, name);
     freeMem(scores, grids, shipsOnField);
-
-    printfCenter("Thank you for playing! ;)\n");
-    eatline;
-    _getch();
 
     return 0;
 }
 
-void saveResult(char fname[], Score *currScore)
+void saveResult(char fname[], Scores * scores, char targetName[])
 {
-    FILE *file_in = fopen(fname, "rb");
-    FILE *file_out = fopen(fname, "rb+");
-    Score scoreBuffer;
-    bool isScoreFound = false;
+    FILE *file_in = fopen(fname, "r");
+    FILE *file_out = fopen(fname, "r+");
+    char nameFromFile[MAX_PNAME];
+    char ch;
 
     if (!file_in)
         return;
-
-    while (fread(&scoreBuffer, sizeof(Score), 1, file_in))
-        if (strcmp(scoreBuffer.name, currScore->name) == 0)
+    
+    while (fscanf(file_in, "%s", nameFromFile) != EOF)
+    {
+        if (strcmp(nameFromFile, targetName) == 0)
         {
-            scoreBuffer.shots = currScore->shots;
-            scoreBuffer.hits = currScore->hits;
-
-            fwrite(&scoreBuffer, sizeof(Score), 1, file_out);
-            isScoreFound = true;
+            fseek(file_out, ftell(file_in), SEEK_SET);
             break;
         }
-        else
-            fseek(file_out, sizeof(Score), SEEK_CUR);
+        while (((ch = fgetc(file_in)) != EOF) && (ch != '\n'))
+            continue;
+    }
 
-    if (!isScoreFound)
-        fwrite(currScore, sizeof(Score), 1, file_out);
+    if (ch == EOF)
+    {
+        fseek(file_out, NULL, SEEK_END);
+        fprintf(file_out, "\n%s", targetName);
+    }
+    fprintf(file_out, " %d", scores->curr->shots);
+    fprintf(file_out, " %d", scores->curr->hits);
 
     fclose(file_in);
     fclose(file_out);
+
+    printf("Thank you for playing! ;)\n");
+    eatline;
+    _getch();
 }
 
 void freeMem(Scores * scores, Grids * grids, Ships * shipsOnField)

@@ -94,9 +94,8 @@ enum ConsoleColor {
 
 void printGreet(void);
 void getName(char *);
-int fgetString(FILE *, char *, int);
 
-Scores * initScores(char[]);
+Scores * initScores(void);
 Grids * initGrids(void);
 
 FILE * getFilePath(char[]);
@@ -146,7 +145,5 @@ bool computerTurn(Scores *, Grids *, Ships *);
 Coords findAssumedCell(const Coords, char[][MAX_GRID], bool[]);
 
 void printResult(int);
-
-void saveResult(char[], Score *);
-
+void saveResult(char[], Scores *, char[]);
 void freeMem(Scores *, Grids *, Ships *);
